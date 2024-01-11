@@ -1,7 +1,7 @@
 import os
 
 # List of evalAnomaly methods you want to test
-methods= ["Max_logits"]
+methods= ["Max_logits","MSP","Max_entropy"]
 
 # List of datasets you want to test  evalAnomaly methods on
 datasets = ["../Testing_Images/RoadAnomaly/images/*.jpg", "../Testing_Images/RoadAnomaly21/images/*.png", 

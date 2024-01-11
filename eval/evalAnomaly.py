@@ -29,7 +29,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument(
         "--input",
-        default="../Testing_Images/RoadAnomaly/images/*.jpg")  
+        default="../../Testing_Images/RoadAnomaly/images/*.jpg")  
     parser.add_argument('--loadDir',default="../trained_models/")
     parser.add_argument('--loadWeights', default="erfnet_pretrained.pth")
     parser.add_argument('--loadModel', default="erfnet.py")
@@ -79,8 +79,7 @@ def main():
 
     print(str(args.input))
 
-    for path in glob.glob(os.path.expanduser(str(args.input))): #!! Ho sostituito args.input[0] -> args.input e ora funziona PD
-        print(path)
+    for path in glob.glob(os.path.expanduser(str(args.input))): #args.input[0] -> args.input 
         images = torch.from_numpy(np.array(Image.open(path).convert('RGB'))).unsqueeze(0).float()
         images = images.permute(0,3,1,2)
         
@@ -93,7 +92,6 @@ def main():
             result = result.squeeze(0).data.cpu().numpy()
             result_norm = (result-np.min(result))/(np.max(result)-np.min(result)) #logits scaling [0,1]
             anomaly_result = 1.0 - np.max(result_norm, axis=0)   
-
 
         elif(args.method == "MSP"):
             # MSP
@@ -109,7 +107,8 @@ def main():
             anomaly_result = anomaly_result.data.cpu().numpy()[0]
 
         else:
-            print("Metodo anomalyResults non riconosciuto")
+            print("AnomalyResults method not recognized.")
+
         ############################################################################
         
         pathGT = path.replace("images", "labels_masks")                

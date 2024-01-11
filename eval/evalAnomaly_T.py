@@ -37,7 +37,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=1)
     parser.add_argument('--cpu', action='store_true')
 
-    parser.add_argument('--temperature', default = 1) #ADDED BY POLETTI
+    parser.add_argument('--temperature', default = 1) 
 
     args = parser.parse_args()
     anomaly_score_list = []

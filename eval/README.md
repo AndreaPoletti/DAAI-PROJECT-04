@@ -1,41 +1,32 @@
 # Functions for evaluating/visualizing the network's output
 
-Currently there are 4 usable functions to evaluate stuff:
-- eval_cityscapes_color
-- eval_cityscapes_server
-- eval_iou
-- eval_forwardTime
-
 ## evalAnomaly.py
 
 This code can be used to produce anomaly segmentation results on various anomaly metrics.
 
 **Examples:**
 ```
-python evalAnomaly.py --input '/home/shyam/ViT-Adapter/segmentation/unk-dataset/RoadAnomaly21/images/*.png'
+python evalAnomaly.py --input '/home/shyam/ViT-Adapter/segmentation/unk-dataset/RoadAnomaly21/images/*.png' --method 'Max_logits'
 ```
 
-## eval_cityscapes_color.py 
+## test_methods.py
 
-This code can be used to produce segmentation of the Cityscapes images in color for visualization purposes. By default it saves images in eval/save_color/ folder. You can also visualize results in visdom with --visualize flag.
+This code can be used to run the evalAnomaly.py script with different methods and test datasets at once. 
 
-**Options:** Specify the Cityscapes folder path with '--datadir' option. Select the cityscapes subset with '--subset' ('val', 'test', 'train' or 'demoSequence'). For other options check the bottom side of the file.
+
+## evalAnomaly_T.py
+
+This code can be used to produce anomaly segmentation results with the Temperature calibrated Maximum Softmax Probability method. 
+
 
 **Examples:**
 ```
-python eval_cityscapes_color.py --datadir /home/datasets/cityscapes/ --subset val
+python evalAnomaly_T.py --input '/home/shyam/ViT-Adapter/segmentation/unk-dataset/RoadAnomaly21/images/*.png' --temperature 1
 ```
 
-## eval_cityscapes_server.py 
+## test_T.py
 
-This code can be used to produce segmentation of the Cityscapes images and convert the output indices to the original 'labelIds' so it can be evaluated using the scripts from Cityscapes dataset (evalPixelLevelSemanticLabeling.py) or uploaded to Cityscapes test server. By default it saves images in eval/save_results/ folder.
-
-**Options:** Specify the Cityscapes folder path with '--datadir' option. Select the cityscapes subset with '--subset' ('val', 'test', 'train' or 'demoSequence'). For other options check the bottom side of the file.
-
-**Examples:**
-```
-python eval_cityscapes_server.py --datadir /home/datasets/cityscapes/ --subset val
-```
+This code can be used to run the evalAnomaly_T.py script with different methods and test datasets at once. 
 
 ## eval_iou.py 
 
@@ -58,7 +49,6 @@ This function loads a model specified by '-m' and enters a loop to continuously 
 python eval_forwardTime.py
 ```
 
-**NOTE**: Paper values were obtained with a single Titan X (Maxwell) and a Jetson TX1 using the original Torch code. The pytorch code is a bit faster, but cudahalf (FP16) seems to give problems at the moment for some pytorch versions so this code only runs at FP32 (a bit slower).
 
 
 
