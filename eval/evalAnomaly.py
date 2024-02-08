@@ -90,7 +90,7 @@ def main():
         if(args.method == "Max_logits"):
             # Max logits
             result = result.squeeze(0).data.cpu().numpy()
-            anomaly_result = - np.max(result, axis=0)
+            anomaly_result = 1.0 - np.max(result, axis=0)
 
         elif(args.method == "MSP"):
             # MSP
