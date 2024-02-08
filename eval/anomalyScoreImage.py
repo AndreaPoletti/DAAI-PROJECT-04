@@ -29,7 +29,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument(
         "--input",
-        default="../../Testing_Images/RoadAnomaly/images/*.jpg")  
+        default="../../Testing_Images/RoadAnomaly21/images/1.png")  
     parser.add_argument('--loadDir',default="../trained_models/")
     parser.add_argument('--loadWeights', default="erfnet_pretrained.pth")
     parser.add_argument('--loadModel', default="erfnet.py")
@@ -90,12 +90,12 @@ def main():
         if(args.method == "Max_logits"):
             # Max logits
             result = result.squeeze(0).data.cpu().numpy()
-            anomaly_result = - np.max(result, axis=0)
+            #result_norm = (result-np.min(result))/(np.max(result)-np.min(result)) #logits scaling [0,1]
+            anomaly_result = - np.max(result, axis=0)   
 
         elif(args.method == "MSP"):
             # MSP
             anomaly_result = 1.0 - np.max(torch.nn.functional.softmax(result,1).squeeze(0).data.cpu().numpy(), axis=0)
-            print(np.unique(anomaly_result))
 
         elif(args.method == "Max_entropy"):
             # MAX ENTROPY
@@ -121,7 +121,11 @@ def main():
         mask = Image.open(pathGT)
         ood_gts = np.array(mask)
 
-        #Image.fromarray(anomaly_result*255).show()
+        im = Image.fromarray((anomaly_result-np.min(anomaly_result))/(np.max(anomaly_result)-np.min(anomaly_result))*255)
+        im = im.convert("RGB")
+        im.show()
+        im.save("Immagine.png", "PNG")
+        print(np.unique(anomaly_result))
 
 
         if "RoadAnomaly" in pathGT:
